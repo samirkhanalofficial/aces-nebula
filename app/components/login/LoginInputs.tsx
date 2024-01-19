@@ -13,7 +13,7 @@ function LoginInputs() {
           <Link
             className={`${buttonVariants({
               variant: "default",
-            })} bg-green-700 hover:bg-green-900 w-96 h-16 text-2xl`}
+            })} bg-green-700 hover:bg-green-900 w-96 h-16 text-2xl sm:h-10 sm:text-lg`}
             href="/home"
           >
             User
@@ -21,7 +21,7 @@ function LoginInputs() {
           <Link
             className={`${buttonVariants({
               variant: "outline",
-            })} border-green-700 border-2 hover:bg-green-200 w-96 h-16 text-2xl`}
+            })} border-green-700 border-2 hover:bg-green-200 w-96 h-16 text-2xl sm:h-10 sm:text-lg`}
             href="/home"
           >
             Vechile Owner
