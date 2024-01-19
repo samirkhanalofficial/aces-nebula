@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IoLocationSharp } from "react-icons/io5";
 import { cn } from "@/lib/utils";
+import { FaSearch } from "react-icons/fa";
 export default function Home() {
   return (
     <div className="p-10 h-[100vh]">
@@ -19,7 +20,15 @@ export default function Home() {
         />
         <Input type="text" />
       </div>
-      <Button variant="default">Find a Ride</Button>
+      <Button
+        variant="default"
+        className="text-xl w-full uppercase bg-green-800"
+      >
+        <div className="flex items-center justify-center gap-4">
+          <span>Search</span>
+          <FaSearch />
+        </div>
+      </Button>
     </div>
   );
 }
