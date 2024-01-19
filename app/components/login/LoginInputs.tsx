@@ -1,35 +1,31 @@
-import React from "react";
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
+"use client";
 
-function LoginInputs() {
+import React, { useEffect } from "react";
+import { MetaMaskProvider } from "@metamask/sdk-react";
+import { formatAddress, sdkOptions } from "@/utils/metamask";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
+import { useSDK } from "@metamask/sdk-react";
+import { useRouter } from "next/navigation";
+import { ConnectWallet } from "../wallet/wallet";
+
+const LoginInputs: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-4 p-4 pt-0">
       <div className="flex items-center justify-center flex-col gap-4 ">
         <span className="font-bold text-xl uppercase mb-1">
           Choose Your Role
         </span>
-        <div className="flex items-center justify-center gap-3 flex-col">
-          <Link
-            className={`${buttonVariants({
-              variant: "default",
-            })} bg-green-700 hover:bg-green-900 w-96 h-16 text-2xl sm:h-10 sm:text-lg`}
-            href="/home"
-          >
-            User
-          </Link>
-          <Link
-            className={`${buttonVariants({
-              variant: "outline",
-            })} border-green-700 border-2 hover:bg-green-200 w-96 h-16 text-2xl sm:h-10 sm:text-lg`}
-            href="/home"
-          >
-            Vehicle Owner
-          </Link>
-        </div>
+        <MetaMaskProvider debug={false} sdkOptions={sdkOptions}>
+          <ConnectWallet />
+        </MetaMaskProvider>
       </div>
     </div>
   );
-}
+};
 
 export default LoginInputs;

@@ -1,8 +1,13 @@
 "use client";
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IoLocationSharp } from "react-icons/io5";
 import { cn } from "@/lib/utils";
+<<<<<<< Updated upstream
 import { FaMap, FaSearch } from "react-icons/fa";
 import { MyMap } from "../components/ui/Map";
 import { useEffect, useState } from "react";
@@ -83,6 +88,26 @@ export default function Home() {
           setLat={setFromLat}
           setLong={setFromLng}
           setFrom={setFrom}
+=======
+import { FaSearch } from "react-icons/fa";
+import { ConnectWallet } from "../components/wallet/wallet";
+import { MetaMaskProvider } from "@metamask/sdk-react";
+import { sdkOptions } from "@/utils/metamask";
+import { useState } from "react";
+
+export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
+  return (
+    <div className="p-10 h-[100vh]">
+      <MetaMaskProvider debug={false} sdkOptions={sdkOptions}>
+        <ConnectWallet />
+      </MetaMaskProvider>
+      <div className="flex flex-row items-center relative">
+        <Input type="text" className={cn("")} />
+        <IoLocationSharp
+          size={25}
+          className="text-green-700 absolute right-0 "
+>>>>>>> Stashed changes
         />
       </div>
       {/* <MyMap lat={lat} lng={lng} setLat={setLat} setLong={setLng} /> */}
