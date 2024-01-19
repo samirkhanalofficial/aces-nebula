@@ -9,9 +9,10 @@ interface MyMapProps {
   lng: any;
   setLat: any;
   setLong: any;
+  setFrom: any;
 }
 
-export function MyMap({ lat, lng, setLat, setLong }: MyMapProps) {
+export function MyMap({ lat, lng, setLat, setLong, setFrom }: MyMapProps) {
   function getLocation() {
     if (!navigator.geolocation) {
       return toast.error(
@@ -44,7 +45,6 @@ export function MyMap({ lat, lng, setLat, setLong }: MyMapProps) {
       <APIProvider apiKey={"AIzaSyBULo4a_0EflZdjjRzOqdGQBuLftnctlb0"}>
         <Map
           onCenterChanged={(data: any) => {
-            console.log(data.detail.center);
             setLat(data.detail.center.lat);
             setLong(data.detail.center.lng);
           }}
