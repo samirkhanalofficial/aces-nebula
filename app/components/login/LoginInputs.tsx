@@ -24,7 +24,7 @@ function LoginInputs() {
             })} border-green-700 border-2 hover:bg-green-200 w-96 h-16 text-2xl`}
             href="/home"
           >
-            Vechile Owner
+            Vehicle Owner
           </Link>
         </div>
       </div>
