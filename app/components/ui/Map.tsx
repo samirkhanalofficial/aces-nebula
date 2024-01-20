@@ -13,7 +13,7 @@ interface MyMapProps {
 
 export function MyMap({ lat, lng, setLat, setLong }: MyMapProps) {
   return (
-    <div className="w-full  h-48 sm:h-96 bg-slate-300 rounded-3xl">
+    <div className="w-full  lg:h-96 h-2/3 bg-slate-300 rounded-3xl">
       <APIProvider apiKey={"AIzaSyBULo4a_0EflZdjjRzOqdGQBuLftnctlb0"}>
         <Map
           onCenterChanged={(data: any) => {

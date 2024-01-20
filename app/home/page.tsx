@@ -10,6 +10,7 @@ import Logo from "../components/ui/Logo";
 import ShortDistanceMap from "../components/ui/ShortDistanceMap";
 import { toast } from "react-toastify";
 import NavBar from "../components/nav/Navbar";
+import useBlockchain from "@/services/useBlockchain";
 export default function Home() {
   const [fromLat, setFromLat] = useState(26);
   const [fromLng, setFromLng] = useState(87);
@@ -29,7 +30,7 @@ export default function Home() {
       };
     }[]
   >([]);
-
+  const { createBooking, getMyHistory } = useBlockchain();
   useEffect(() => {
     // Define a delay for the debounce
     const delay = 300;
@@ -279,8 +280,16 @@ export default function Home() {
             ))}
         </div>
         <Button
-          onClick={() => {
-            console.log(fromLat, fromLng, toLat, toLng);
+          onClick={async () => {
+            console.log("hey");
+            createBooking(fromLat, fromLng, toLat, toLng);
+            // const test = await contract?.createBooking(
+            //   fromLat,
+            //   fromLng,
+            //   toLat,
+            //   toLng
+            // );
+            // console.log(test);
           }}
           variant="default"
           className="text-md w-full  bg-green-800"
