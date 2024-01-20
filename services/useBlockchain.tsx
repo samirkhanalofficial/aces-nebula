@@ -63,14 +63,15 @@ export default function useBlockchain() {
   async function acceptBooking(uid: number, price: number) {
     await initalize();
     if (!contract) return toast.error("contract not initialized");
-    return await contract
+    await contract
       .acceptBooking(uid, price)
       .then(async (res) => {
         console.log("booking accepted");
-        console.log("redirecting to routing ");
-        router.push(`/home/routing/${uid}`);
+        return "accepted";
       })
-      .catch((err) => toast.error(err));
+      .catch((err) => {
+        throw err;
+      });
   }
   async function withdraw(amount: number) {
     await initalize();
