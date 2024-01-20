@@ -4,13 +4,13 @@ import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 
 import { useEffect, useLayoutEffect, useState } from "react";
 import { toast } from "react-toastify";
-import Loading from "../components/ui/Loading";
 import { Button } from "@/components/ui/button";
-import { MyMap } from "../components/ui/Map";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/components/ui/Loading";
 
-export default function User() {
-  const { getAllBookings, acceptBooking } = useBlockchain();
+export default function AfterSearch() {
+  const { getAllBookings, pay, acceptBooking, getMyWalletAddress } =
+    useBlockchain();
   const [isLoading, setIsLoading] = useState(false);
   const [bookings, setBookings] = useState<any[]>([]);
 
@@ -48,7 +48,7 @@ export default function User() {
 
   return (
     <div className="flex items-center justify-center flex-col mx-auto p-4">
-      <h2 className="text-4xl font-bold mb-4 uppercase">PickUp Details</h2>
+      <h2 className="text-4xl font-bold mb-4 uppercase">EV Details</h2>
 
       {isLoading ? (
         <Loading />
@@ -69,13 +69,13 @@ export default function User() {
                         >
                           <Map
                             center={{
-                              lat: Number(a[2]), // Assuming the first booking for centering
-                              lng: Number(a[3]),
+                              lat: Number(a[4]), // Assuming the first booking for centering
+                              lng: Number(a[5]),
                             }}
                             zoom={15}
                           ></Map>
                         </APIProvider>
-                        User live Location:
+                        EV live Location:
                       </div>
                       {/* <div className="w-40 block clear-both h-40">
                         <APIProvider
@@ -93,12 +93,13 @@ export default function User() {
                       </div> */}
                     </div>
                     <br />
+                    <span className="font-bold  w-1/2">Acceptor: {a[6]}</span>
                     {/* <p>
                     <span className="font-bold">uid: {Number(a[0])}</span>
                   </p> */}
-                    <p className="flex">
+                    {/* <p className="flex">
                       <span className="font-bold w-1/2">Initiator: {a[1]}</span>
-                    </p>
+                    </p> */}
                     {/* <p>
                     <span className="font-bold">
                       From Latitude: {Number(a[2])}
@@ -134,7 +135,11 @@ export default function User() {
                           <Button
                             variant="default"
                             onClick={async () => {
-                              router.push("/owner");
+                              const address = await getMyWalletAddress();
+                              pay("200", address).then((res) => {
+                                router.push("/Home");
+                                toast.success("Payment Successful");
+                              });
                             }}
                           >
                             Complete Ride
@@ -146,7 +151,8 @@ export default function User() {
                           variant="default"
                           className={`bg-red-700 hover:bg-red-900 `}
                           onClick={() => {
-                            router.push("/owner");
+                            toast.success("Ride Cancelled");
+                            router.push("/home");
                           }}
                         >
                           Cancel ride

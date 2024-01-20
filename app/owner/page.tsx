@@ -18,9 +18,10 @@ import useBlockchain from "@/services/useBlockchain";
 import { useRouter } from "next/navigation";
 
 function Page() {
-  const { getMyWalletAddress } = useBlockchain();
+  const { getMyWalletAddress, getMyBalance } = useBlockchain();
   const [qrclicked, setQrClicked] = useState(false);
   const [amount, setAmount] = useState(0);
+  const [balance, setBalance] = useState(0);
 
   const [walletAddress, setWalletAddress] = useState(null);
   const router = useRouter();
@@ -28,6 +29,7 @@ function Page() {
   useEffect(() => {
     const fetchWalletAddress = async () => {
       try {
+        setBalance(await getMyBalance());
         const address = await getMyWalletAddress();
         setWalletAddress(address);
       } catch (error) {
@@ -61,6 +63,8 @@ function Page() {
         </Button>
       </div>
       <Logo />
+      <br />
+      Your Balance: {22670} USD
       <div className="flex flex-col items-center justify-center h-screen gap-8">
         <Input
           type="number"

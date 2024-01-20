@@ -11,7 +11,7 @@ export default function SearchPage() {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [bookings, setBookings] = React.useState<any[]>([]);
   const { getMyHistory } = useBlockchain();
-  var peer;
+
   useLayoutEffect(() => {
     setTimeout(async () => {
       const res = await getMyHistory();
@@ -45,7 +45,9 @@ export default function SearchPage() {
   return (
     <>
       <NavBar route={"user"} />
-
+      <div className="m-5 p-10 bg-white shadow-md">
+        Your Reward Points : 300 Points
+      </div>
       <div>
         {bookings.map((a) => (
           <div

@@ -3,23 +3,30 @@ import useBlockchain from "@/services/useBlockchain";
 import Image from "next/image";
 import React, { useLayoutEffect, useState } from "react";
 import { Peer } from "peerjs";
+import AfterSearch from "./page2";
 export default function SearchPage() {
   const [acceptor, setAcceptor] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const { getMyWalletAddress } = useBlockchain();
+  const { getMyWalletAddress, getAllBookings } = useBlockchain();
+  const [bookings, setBookings] = useState<any[]>([]);
+
+  const fsdj = async () => {
+    console.log("calling");
+    await getAllBookings().then((res: any) => {
+      console.log(res);
+      setBookings(res);
+    });
+  };
+  useLayoutEffect(() => {
+    fsdj();
+  }, []);
+
   const [peer, setPeer] = useState<Peer>();
   useLayoutEffect(() => {
     setTimeout(async () => {
       const res = await getMyWalletAddress();
       console.log(res);
-      setPeer(new Peer(res));
-      peer?.on("connection", (conn) => {
-        console.log(conn);
-        conn.on("data", (data) => {
-          // Will print 'hi!'
-          console.log(data);
-        });
-      });
+      setLoading(false);
     }, 2000);
   }, []);
   if (loading) {
@@ -46,7 +53,9 @@ export default function SearchPage() {
 
   return (
     <>
-      <div></div>
+      <div>
+        <AfterSearch />
+      </div>
     </>
   );
 }
