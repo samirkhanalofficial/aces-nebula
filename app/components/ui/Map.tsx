@@ -20,7 +20,10 @@ export function MyMap({ lat, lng, setLat, setLong }: MyMapProps) {
             setLat(data.detail.center.lat);
             setLong(data.detail.center.lng);
           }}
-          center={{ lat: 27.670438703148488, lng: 85.34437201488507 }}
+          center={{
+            lat: 27.670438703148488,
+            lng: 85.34437201488507,
+          }}
           zoom={11}
         >
           <Marker position={{ lat, lng }} />

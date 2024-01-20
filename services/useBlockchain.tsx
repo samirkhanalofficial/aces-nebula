@@ -82,15 +82,19 @@ export default function useBlockchain() {
       })
       .catch((err) => toast.error(err));
   }
-  async function pay(amount: number, receiver: string) {
+  async function pay(amount: string, receiver: string) {
     await initalize();
     if (!contract) return toast.error("contract not initialized");
-    return await contract
-      .pay(amount, receiver, { value: parseEther(amount.toString()) })
-      .then(async (res) => {
-        toast.success("Amount Paid");
-      })
-      .catch((err) => toast.error(err));
+    var amt = BigInt(parseInt(amount));
+    const success = await contract.pay(amt, receiver, {
+      value: parseEther(amt.toString()),
+    });
+
+    if (success) {
+      toast.success("Amount paid");
+      return success;
+    }
+    return;
   }
   async function getLastBooking() {
     const bookings: bookingType[] = await getMyHistory();

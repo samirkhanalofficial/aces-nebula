@@ -1,12 +1,27 @@
 "use client";
 import useBlockchain from "@/services/useBlockchain";
 import Image from "next/image";
-import React from "react";
-
+import React, { useLayoutEffect, useState } from "react";
+import { Peer } from "peerjs";
 export default function SearchPage() {
   const [acceptor, setAcceptor] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const {} = useBlockchain();
+  const { getMyWalletAddress } = useBlockchain();
+  const [peer, setPeer] = useState<Peer>();
+  useLayoutEffect(() => {
+    setTimeout(async () => {
+      const res = await getMyWalletAddress();
+      console.log(res);
+      setPeer(new Peer(res));
+      peer?.on("connection", (conn) => {
+        console.log(conn);
+        conn.on("data", (data) => {
+          // Will print 'hi!'
+          console.log(data);
+        });
+      });
+    }, 2000);
+  }, []);
   if (loading) {
     return (
       <div className="flex items-center justify-center w-full h-screen ">
@@ -29,5 +44,9 @@ export default function SearchPage() {
     );
   }
 
-  return <></>;
+  return (
+    <>
+      <div></div>
+    </>
+  );
 }

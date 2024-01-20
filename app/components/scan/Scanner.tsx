@@ -1,5 +1,8 @@
-import React from "react";
+import useBlockchain from "@/services/useBlockchain";
+import React, { useState } from "react";
 import QRCode from "react-qr-code";
+import Loading from "../ui/Loading";
+import { toast } from "react-toastify";
 
 const QrCodeGenerator = ({
   amount,
