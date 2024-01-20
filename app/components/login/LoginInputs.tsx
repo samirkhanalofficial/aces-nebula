@@ -3,14 +3,7 @@
 import React, { useEffect } from "react";
 import { MetaMaskProvider } from "@metamask/sdk-react";
 import { formatAddress, sdkOptions } from "@/utils/metamask";
-import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@radix-ui/react-popover";
-import { useSDK } from "@metamask/sdk-react";
-import { useRouter } from "next/navigation";
+
 import { ConnectWallet } from "../wallet/wallet";
 
 const LoginInputs: React.FC = () => {

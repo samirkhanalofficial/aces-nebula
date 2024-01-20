@@ -10,9 +10,9 @@ export default function NavBar({ route }: { route: string }) {
       <div className="bottom-appbar">
         <div className="tabs">
           <Link
-            href={"/Home"}
+            href={"/home"}
             className={`tab  tab--left  ${
-              route === "home" ? "text-blue-500" : "text-black"
+              route === "home" ? "text-green-500" : "text-black "
             }`}
           >
             <AiFillHome />
@@ -27,7 +27,7 @@ export default function NavBar({ route }: { route: string }) {
           <Link
             href={"/user"}
             className={`tab tab--right ${
-              route === "user" ? "text-blue-500" : ""
+              route === "user" ? "text-green-500" : ""
             }`}
           >
             <FaUser

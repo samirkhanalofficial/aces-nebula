@@ -166,7 +166,7 @@ export default function Home() {
 
   return (
     <>
-      <NavBar route={"/home"} />
+      <NavBar route={"home"} />
 
       <div className="p-8 h-[100vh]">
         {selectedInput == "from" ? (
@@ -197,6 +197,10 @@ export default function Home() {
           </>
         )}
         <div id="locations" className=" mt-5">
+          <b>
+            <small>Pickup Location : </small>
+          </b>
+          <br />
           <div className="flex  items-center relative justify-center ">
             <Input
               type="text"
@@ -233,8 +237,11 @@ export default function Home() {
             ))}
         </div>
         {/* <MyMap lat={lat} lng={lng} setLat={setLat} setLong={setLng} /> */}
-
-        <div id="locations" className="border-2 my-5">
+        <br />
+        <b>
+          <small>Destination : </small>
+        </b>
+        <div id="locations" className=" mb-5">
           <div className="flex flex-row items-center  relative">
             <Input
               type="text"
