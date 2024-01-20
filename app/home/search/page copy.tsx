@@ -1,25 +1,19 @@
 "use client";
 import useBlockchain from "@/services/useBlockchain";
 import Image from "next/image";
-import React, { useLayoutEffect, useState } from "react";
-import { Peer } from "peerjs";
+import React, { useLayoutEffect } from "react";
+
 export default function SearchPage() {
   const [acceptor, setAcceptor] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const { getMyWalletAddress } = useBlockchain();
-  const [peer, setPeer] = useState<Peer>();
+  const [bookings, setBookings] = React.useState<any[]>([]);
+  const { getMyHistory } = useBlockchain();
   useLayoutEffect(() => {
     setTimeout(async () => {
-      const res = await getMyWalletAddress();
+      const res = await getMyHistory();
       console.log(res);
-      setPeer(new Peer(res));
-      peer?.on("connection", (conn) => {
-        console.log(conn);
-        conn.on("data", (data) => {
-          // Will print 'hi!'
-          console.log(data);
-        });
-      });
+      setBookings(res);
+      setLoading(false);
     }, 2000);
   }, []);
   if (loading) {
@@ -46,7 +40,29 @@ export default function SearchPage() {
 
   return (
     <>
-      <div></div>
+      <div>
+        {bookings.map((a) => (
+          <div key={a[0]} className="p-5 rounded-2xl shadow-lg m-5">
+            uid {a[0]}
+            <br />
+            initiatior {a[1]}
+            <br />
+            fromlat {a[2]}
+            <br />
+            fromlong {a[3]}
+            <br />
+            tolat {a[4]}
+            <br />
+            tolong {a[5]}
+            <br />
+            acceptor {a[6]}
+            <br />
+            price {a[7]}
+            <br />
+            <br />
+          </div>
+        ))}
+      </div>
     </>
   );
 }
