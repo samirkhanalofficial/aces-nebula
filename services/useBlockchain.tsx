@@ -22,7 +22,7 @@ export default function useBlockchain() {
   const router = useRouter();
   //   const deployAddress = "0x6d77eE913BbfEF1aB17a6642b40E48D829Ed5a11";
   //   const deployAddress = "0x193B0785cfD70dfDEce6271166c7e30A344C120B";
-  const deployAddress = "0x717c595363C4dA41e9462352d9925Ab0a3b28231";
+  const deployAddress = "0x95841B95c6d1dCc82f00371bD7b93b488e767999";
 
   let provider: BrowserProvider | undefined,
     contract: Contract | undefined,
