@@ -51,9 +51,8 @@ export default function useBlockchain() {
       .then(async (res) => {
         console.log("booking created");
         const lastBooking: bookingType | undefined = await getLastBooking();
-        if (!lastBooking) throw "Error getting last booking";
-        console.log("Getting last booking ", lastBooking);
-        router.push(`/home/search/${lastBooking.uid}`);
+
+        router.push(`/home/search/`);
         toast.success("Booking created");
       })
       .catch((err) => {
@@ -128,5 +127,29 @@ export default function useBlockchain() {
       })
       .catch((err) => toast.error(err));
   }
+  async function getMyRewardPoint() {
+    await initalize();
+    if (!contract) return toast.error("contract not initialized");
+    return await contract!
+      .myRewardPoint()
+      .then((res) => {
+        console.log("getting reward point", res);
+        return res;
+      })
+      .catch((err) => toast.error(err));
+  }
+
+  async function getMyWalletAddress() {
+    await initalize();
+    if (!contract) return toast.error("contract not initialized");
+    return await contract!
+      .getMyWalletAddress()
+      .then((res) => {
+        console.log("getting wallet address", res);
+        return res;
+      })
+      .catch((err) => toast.error(err));
+  }
+
   return { createBooking, getMyHistory };
 }

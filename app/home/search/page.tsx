@@ -1,10 +1,12 @@
 "use client";
+import useBlockchain from "@/services/useBlockchain";
 import Image from "next/image";
 import React from "react";
 
 export default function SearchPage() {
   const [acceptor, setAcceptor] = React.useState<any>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
+  const {} = useBlockchain();
   if (loading) {
     return (
       <div className="flex items-center justify-center w-full h-screen ">
