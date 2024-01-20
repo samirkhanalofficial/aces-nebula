@@ -1,11 +1,15 @@
 "use client";
 import useBlockchain, { bookingType } from "@/services/useBlockchain";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 
 import { useEffect, useLayoutEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Loading from "../components/ui/Loading";
+import { Button } from "@/components/ui/button";
+import { MyMap } from "../components/ui/Map";
 
 export default function User() {
-  const { getAllBookings } = useBlockchain();
+  const { getAllBookings, acceptBooking } = useBlockchain();
   const [isLoading, setIsLoading] = useState(false);
   const [bookings, setBookings] = useState<any[]>([]);
 
@@ -34,32 +38,109 @@ export default function User() {
   //   },
   //   [getAllBookings]
   // );
-  return (
-    <div>
-      <h2>Bookings</h2>
+  const [clicked, setClicked] = useState(false);
 
-      <br />
-      {bookings.map((a) => (
-        <div key={a[0]}>
-          uid {a[0]}
-          <br />
-          initiatior {a[1]}
-          <br />
-          fromlat {a[2]}
-          <br />
-          fromlong {a[3]}
-          <br />
-          tolat {a[4]}
-          <br />
-          tolong {a[5]}
-          <br />
-          acceptor {a[6]}
-          <br />
-          price {a[7]}
-          <br />
-          <br />
+  const [rejectedBookingId, setRejectedBookingId] = useState<number | null>(
+    null
+  );
+
+  return (
+    <div className="flex items-center justify-center flex-col mx-auto p-4">
+      <h2 className="text-4xl font-bold mb-4 uppercase">Bookings</h2>
+
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col gap-4  justify-center items-center">
+            {bookings
+              .filter((booking) => booking[0] !== rejectedBookingId)
+              .map((a) => (
+                <div key={a[0]} className=" border-2 p-4 shadow rounded-lg ">
+                  <p>
+                    <span className="font-bold">uid: {Number(a[0])}</span>
+                  </p>
+                  <p className="flex">
+                    <span className="font-bold w-1/2">Initiator: {a[1]}</span>
+                  </p>
+                  <p>
+                    <span className="font-bold">
+                      From Latitude: {Number(a[2])}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-bold">
+                      From Longitude: {Number(a[3])}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-bold">
+                      To Latitude: {Number(a[4])}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-bold">
+                      To Longitude: {Number(a[5])}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-bold  w-1/2">
+                      Acceptor: {Number(a[6])}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-bold">Price: {Number(a[7])}</span>
+                  </p>
+
+                  <div className="flex  items-center justify-between gap-8">
+                    <div className="flex items-center justify-center gap-2">
+                      {!isLoading ? (
+                        <Button
+                          variant="default"
+                          onClick={async () => {
+                            try {
+                              setIsLoading(true);
+                              const res = await acceptBooking(a[0], a[7]);
+                              setIsLoading(false);
+                            } catch (e: any) {
+                              console.log(e);
+                            }
+                          }}
+                        >
+                          Accept
+                        </Button>
+                      ) : (
+                        <Loading />
+                      )}
+                      <Button
+                        variant="default"
+                        className={`bg-red-700 hover:bg-red-900 `}
+                        onClick={() => {
+                          setClicked(true);
+                        }}
+                      >
+                        Reject
+                      </Button>
+                    </div>
+                    <div className="w-40 block clear-both h-40">
+                      <APIProvider
+                        apiKey={"AIzaSyBULo4a_0EflZdjjRzOqdGQBuLftnctlb0"}
+                      >
+                        <Map
+                          center={{
+                            lat: Number(a[4]), // Assuming the first booking for centering
+                            lng: Number(a[5]),
+                          }}
+                          zoom={15}
+                        ></Map>
+                      </APIProvider>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
-      ))}
+      )}
     </div>
   );
 }
