@@ -6,9 +6,15 @@ import { BiQrScan } from "react-icons/bi";
 import { useState } from "react";
 import { QrScanner } from "@yudiel/react-qr-scanner";
 import { IoClose } from "react-icons/io5";
+import useBlockchain from "@/services/useBlockchain";
+import { toast } from "react-toastify";
+import Loading from "../ui/Loading";
 
 export default function NavBar({ route }: { route: string }) {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { pay } = useBlockchain();
 
   const handleQrButtonClick = () => {
     setOpen(!open);
@@ -53,10 +59,34 @@ export default function NavBar({ route }: { route: string }) {
               onClick={handleQrButtonClick}
               className="absolute top-2 right-2 cursor-pointer"
             />
-            <QrScanner
-              onDecode={(result) => console.log(result)}
-              onError={(error) => console.log(error?.message)}
-            />
+            {!isLoading ? (
+              <QrScanner
+                onDecode={async (result: any) => {
+                  "use client";
+                  try {
+                    setIsLoading(true);
+                    const jsonResult = JSON.parse(result);
+                    const res = await pay(
+                      jsonResult[0].amount.toString(),
+                      jsonResult[0].address
+                    );
+                    setIsLoading(false);
+                  } catch (error: any) {
+                    console.log(error);
+                    toast.error(
+                      "Transaction Failed. Insure that you have enough balance.",
+                      {
+                        position: "bottom-right",
+                      }
+                    );
+                    setIsLoading(false);
+                  }
+                }}
+                onError={(error) => console.log(error?.message)}
+              />
+            ) : (
+              <Loading />
+            )}
           </div>
         </div>
       )}

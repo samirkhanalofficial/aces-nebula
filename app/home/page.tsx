@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import NavBar from "../components/nav/Navbar";
 import useBlockchain from "@/services/useBlockchain";
 import Loading from "../components/ui/Loading";
+import { useRouter } from "next/navigation";
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [fromLat, setFromLat] = useState(26);
@@ -31,6 +32,7 @@ export default function Home() {
       };
     }[]
   >([]);
+  const router = useRouter();
   async function logout() {
     localStorage.clear();
     sessionStorage.clear();
@@ -177,8 +179,9 @@ export default function Home() {
       <Button
         onClick={() => {
           logout();
+          router.push("/");
         }}
-        className="flex absolute right-0 m-3"
+        className="flex absolute right-0 m-3 uppercase"
       >
         logout
       </Button>
