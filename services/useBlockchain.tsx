@@ -159,7 +159,11 @@ export default function useBlockchain() {
         console.log("getting all bookings", res);
         return res;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("Error getting all bookings");
+        console.log(err);
+        return [];
+      });
   }
 
   return {
