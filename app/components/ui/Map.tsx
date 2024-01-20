@@ -9,37 +9,9 @@ interface MyMapProps {
   lng: any;
   setLat: any;
   setLong: any;
-  setFrom: any;
 }
 
-export function MyMap({ lat, lng, setLat, setLong, setFrom }: MyMapProps) {
-  function getLocation() {
-    if (!navigator.geolocation) {
-      return toast.error(
-        "Please provide location permission to make better use of this service."
-      );
-    }
-    navigator.permissions.query({ name: "geolocation" }).then((result) => {
-      if (result.state === "denied") {
-        toast.error(
-          "Please provide location permission to make better use of this service."
-        );
-        return;
-      }
-    });
-    let location = null;
-    let latitude = null;
-    let longitude = null;
-    if (window.navigator && window.navigator.geolocation) {
-      location = window.navigator.geolocation;
-    } else {
-      return toast.error("please provide location permission.");
-    }
-    location.getCurrentPosition(async function (position) {
-      latitude = position.coords.latitude.toString();
-      longitude = position.coords.longitude.toString();
-    });
-  }
+export function MyMap({ lat, lng, setLat, setLong }: MyMapProps) {
   return (
     <div className="w-full  h-48 sm:h-96 bg-red-600 rounded-3xl">
       <APIProvider apiKey={"AIzaSyBULo4a_0EflZdjjRzOqdGQBuLftnctlb0"}>
