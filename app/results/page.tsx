@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Loading from "../components/ui/Loading";
 import { Button } from "@/components/ui/button";
 import { MyMap } from "../components/ui/Map";
+import { useRouter } from "next/navigation";
 
 export default function User() {
   const { getAllBookings, acceptBooking } = useBlockchain();
@@ -43,6 +44,7 @@ export default function User() {
   const [rejectedBookingId, setRejectedBookingId] = useState<number | null>(
     null
   );
+  const router = useRouter();
 
   return (
     <div className="flex items-center justify-center flex-col mx-auto p-4">
@@ -57,13 +59,44 @@ export default function User() {
               .filter((booking) => booking[0] !== rejectedBookingId)
               .map((a) => (
                 <div key={a[0]} className=" border-2 p-4 shadow rounded-lg ">
-                  <p>
+                  <div className="w-full flex justify-between items-center">
+                    <div className="w-40 block clear-both h-40">
+                      <APIProvider
+                        apiKey={"AIzaSyBULo4a_0EflZdjjRzOqdGQBuLftnctlb0"}
+                      >
+                        <Map
+                          center={{
+                            lat: Number(a[2]), // Assuming the first booking for centering
+                            lng: Number(a[3]),
+                          }}
+                          zoom={15}
+                        ></Map>
+                      </APIProvider>
+                      From:
+                    </div>
+                    <div className="w-40 block clear-both h-40">
+                      <APIProvider
+                        apiKey={"AIzaSyBULo4a_0EflZdjjRzOqdGQBuLftnctlb0"}
+                      >
+                        <Map
+                          center={{
+                            lat: Number(a[4]), // Assuming the first booking for centering
+                            lng: Number(a[5]),
+                          }}
+                          zoom={15}
+                        ></Map>
+                      </APIProvider>
+                      To
+                    </div>
+                  </div>
+                  <br />
+                  {/* <p>
                     <span className="font-bold">uid: {Number(a[0])}</span>
-                  </p>
+                  </p> */}
                   <p className="flex">
                     <span className="font-bold w-1/2">Initiator: {a[1]}</span>
                   </p>
-                  <p>
+                  {/* <p>
                     <span className="font-bold">
                       From Latitude: {Number(a[2])}
                     </span>
@@ -87,10 +120,10 @@ export default function User() {
                     <span className="font-bold  w-1/2">
                       Acceptor: {Number(a[6])}
                     </span>
-                  </p>
-                  <p>
+                  </p> */}
+                  {/* <p>
                     <span className="font-bold">Price: {Number(a[7])}</span>
-                  </p>
+                  </p> */}
 
                   <div className="flex  items-center justify-between gap-8">
                     <div className="flex items-center justify-center gap-2">
@@ -100,10 +133,19 @@ export default function User() {
                           onClick={async () => {
                             try {
                               setIsLoading(true);
-                              const res = await acceptBooking(a[0], a[7]);
-                              setIsLoading(false);
+                              var price = prompt("Enter price of this ride");
+                              const res = await acceptBooking(
+                                a[0],
+                                Number(price)
+                              );
+                              router.push(
+                                `/live?uid=${a[0]}&initiator=${a[1]}`
+                              );
                             } catch (e: any) {
                               console.log(e);
+                              toast.error("Error: " + e.toString());
+                            } finally {
+                              setIsLoading(false);
                             }
                           }}
                         >
@@ -116,24 +158,15 @@ export default function User() {
                         variant="default"
                         className={`bg-red-700 hover:bg-red-900 `}
                         onClick={() => {
-                          setClicked(true);
+                          setBookings((prev) =>
+                            bookings.filter(
+                              (e) => Number(e[0]) !== Number(a[0])
+                            )
+                          );
                         }}
                       >
                         Reject
                       </Button>
-                    </div>
-                    <div className="w-40 block clear-both h-40">
-                      <APIProvider
-                        apiKey={"AIzaSyBULo4a_0EflZdjjRzOqdGQBuLftnctlb0"}
-                      >
-                        <Map
-                          center={{
-                            lat: Number(a[4]), // Assuming the first booking for centering
-                            lng: Number(a[5]),
-                          }}
-                          zoom={15}
-                        ></Map>
-                      </APIProvider>
                     </div>
                   </div>
                 </div>
