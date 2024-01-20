@@ -31,6 +31,10 @@ export default function Home() {
       };
     }[]
   >([]);
+  async function logout() {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
   const { createBooking, getMyHistory } = useBlockchain();
   useEffect(() => {
     // Define a delay for the debounce
@@ -170,7 +174,19 @@ export default function Home() {
     <>
       <NavBar route={"home"} />
 
-      <div className="p-8 h-[100vh]">
+      <Button
+        onClick={() => {
+          logout();
+        }}
+        className="flex absolute right-0 m-3"
+      >
+        logout
+      </Button>
+      <div className="block h-22">
+        <br />
+        <br />
+      </div>
+      <div className="p-8 h-[100vh] ">
         {selectedInput == "from" ? (
           <>
             <MyMap
