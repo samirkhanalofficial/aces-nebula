@@ -11,7 +11,9 @@ import ShortDistanceMap from "../components/ui/ShortDistanceMap";
 import { toast } from "react-toastify";
 import NavBar from "../components/nav/Navbar";
 import useBlockchain from "@/services/useBlockchain";
+import Loading from "../components/ui/Loading";
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
   const [fromLat, setFromLat] = useState(26);
   const [fromLng, setFromLng] = useState(87);
   const [from, setFrom] = useState("");
@@ -279,25 +281,34 @@ export default function Home() {
               </div>
             ))}
         </div>
-        <Button
-          onClick={async () => {
-            console.log("hey");
-            createBooking(fromLat, fromLng, toLat, toLng);
-            // const test = await contract?.createBooking(
-            //   fromLat,
-            //   fromLng,
-            //   toLat,
-            //   toLng
-            // );
-            // console.log(test);
-          }}
-          variant="default"
-          className="text-md w-full  bg-green-800"
-        >
-          <div className="flex items-center justify-center gap-4">
-            <span>Find a Ride</span>
-          </div>
-        </Button>
+
+        {!isLoading ? (
+          <Button
+            onClick={async () => {
+              try {
+                setIsLoading(true);
+                const res = await createBooking(fromLat, fromLng, toLat, toLng);
+                setIsLoading(false);
+              } catch (error: any) {
+                toast.error(
+                  "Transaction Failed. Insure that you have enough balance.",
+                  {
+                    position: "bottom-right",
+                  }
+                );
+                setIsLoading(false);
+              }
+            }}
+            variant="default"
+            className="text-md w-full  bg-green-800"
+          >
+            <div className="flex items-center justify-center gap-4">
+              <span>Find a Ride</span>
+            </div>
+          </Button>
+        ) : (
+          <Loading />
+        )}
       </div>
       <br />
       <br />

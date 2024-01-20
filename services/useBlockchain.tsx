@@ -49,12 +49,15 @@ export default function useBlockchain() {
       .then(async (res) => {
         console.log("booking created");
         const lastBooking: bookingType | undefined = await getLastBooking();
-        if (!lastBooking) return "Error getting last booking";
+        if (!lastBooking) throw "Error getting last booking";
         console.log("Getting last booking ", lastBooking);
         router.push(`/home/search/${lastBooking.uid}`);
         toast.success("Booking created");
       })
-      .catch((err) => toast.error(err));
+      .catch((err) => {
+        throw err;
+        toast.error(err);
+      });
   }
   async function acceptBooking(uid: number, price: number) {
     await initalize();
