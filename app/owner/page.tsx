@@ -11,21 +11,68 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../components/ui/Logo";
 import QrCodeGenerator from "../components/scan/Scanner";
+import useBlockchain from "@/services/useBlockchain";
+import { useRouter } from "next/navigation";
 
 function Page() {
+  const { getMyWalletAddress } = useBlockchain();
   const [qrclicked, setQrClicked] = useState(false);
-  const handleQrButtonClick = () => {
+  const [amount, setAmount] = useState(0);
+
+  const [walletAddress, setWalletAddress] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchWalletAddress = async () => {
+      try {
+        const address = await getMyWalletAddress();
+        setWalletAddress(address);
+      } catch (error) {
+        console.error("Error fetching wallet address:", error);
+      }
+    };
+
+    fetchWalletAddress();
+  }, [getMyWalletAddress]);
+
+  const handleQrButtonClick = async () => {
     setQrClicked(!qrclicked);
   };
+
+  async function logout() {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
+
   return (
     <main className="flex flex-col items-center justify-center h-screen p-4">
-      <Logo />
-      <div className="flex flex-col items-center justify-center h-screen gap-8">
+      <div className="flex justify-end w-full">
         <Button
           onClick={() => {
+            logout();
+            router.push("/");
+          }}
+          className="right-0 left-auto m-3 uppercase justify-end "
+        >
+          logout
+        </Button>
+      </div>
+      <Logo />
+      <div className="flex flex-col items-center justify-center h-screen gap-8">
+        <Input
+          type="number"
+          placeholder="Rs."
+          className="text-3xl p-8 w-80 h-20 border-2 "
+          value={amount.toString()}
+          onChange={(e) => {
+            setAmount(Number(e.target.value));
+          }}
+        />
+        <Button
+          onClick={async () => {
             setQrClicked((prev) => !prev);
           }}
           variant="outline"
@@ -42,29 +89,10 @@ function Page() {
                 onClick={handleQrButtonClick}
                 className="absolute top-2 right-2 cursor-pointer"
               />
-              <QrCodeGenerator address="112" amount={100} />
+              <QrCodeGenerator address={walletAddress!} amount={amount} />
             </div>
           </div>
         )}
-        <Dialog>
-          <DialogTrigger className=" bg-green-700 text-3xl p-8 w-80 h-20 flex items-center justify-center text-white rounded-lg">
-            Generate Amount
-          </DialogTrigger>
-          <DialogContent className="w-11/12 rounded-lg">
-            <DialogHeader>
-              <DialogTitle className="mb-4 text-3xl">
-                How much amount do you want to charge?
-              </DialogTitle>
-              <DialogDescription>
-                <Input
-                  type="number"
-                  placeholder="Rs."
-                  className="text-4xl p-8 "
-                />
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
       </div>
     </main>
   );

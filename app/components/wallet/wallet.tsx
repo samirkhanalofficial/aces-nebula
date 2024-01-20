@@ -14,10 +14,12 @@ import { useRouter } from "next/navigation";
 export const ConnectWallet: React.FC = () => {
   const { sdk, connected, account, connecting } = useSDK();
   const router = useRouter();
+  const [isUser, setIsUser] = useState(true);
 
   useEffect(() => {
     if (connected) {
-      router.push("/home");
+      if (isUser) router.push("/home");
+      else router.push("/owner");
     }
   }, [connected]);
   const handleConnect = () => {
@@ -46,7 +48,10 @@ export const ConnectWallet: React.FC = () => {
           className={`${buttonVariants({
             variant: "default",
           })} bg-green-700 hover:bg-green-900 w-96 h-16 text-2xl sm:h-10 sm:text-lg`}
-          onClick={handleConnect}
+          onClick={() => {
+            handleConnect();
+            setIsUser(true);
+          }}
         >
           User
         </Button>
@@ -54,7 +59,10 @@ export const ConnectWallet: React.FC = () => {
           className={`${buttonVariants({
             variant: "outline",
           })} border-green-700 text-green-700 border-2  w-96 h-16 text-2xl sm:h-10 sm:text-lg`}
-          onClick={handleConnect}
+          onClick={() => {
+            handleConnect();
+            setIsUser(false);
+          }}
         >
           Vehicle Owner
         </Button>
