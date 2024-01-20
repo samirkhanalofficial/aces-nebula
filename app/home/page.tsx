@@ -10,6 +10,7 @@ import Logo from "../components/ui/Logo";
 import ShortDistanceMap from "../components/ui/ShortDistanceMap";
 import { toast } from "react-toastify";
 import NavBar from "../components/nav/Navbar";
+import { useRouter } from "next/navigation";
 export default function Home() {
   const [fromLat, setFromLat] = useState(26);
   const [fromLng, setFromLng] = useState(87);
@@ -29,6 +30,12 @@ export default function Home() {
       };
     }[]
   >([]);
+  const router = useRouter();
+
+  function handleFindClick() {
+    if (!from || !to) return;
+    router.push("/results");
+  }
 
   useEffect(() => {
     // Define a delay for the debounce
@@ -279,9 +286,7 @@ export default function Home() {
             ))}
         </div>
         <Button
-          onClick={() => {
-            console.log(fromLat, fromLng, toLat, toLng);
-          }}
+          onClick={handleFindClick}
           variant="default"
           className="text-md w-full  bg-green-800"
         >
