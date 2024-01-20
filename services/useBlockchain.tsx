@@ -155,11 +155,11 @@ export default function useBlockchain() {
     if (!contract) return toast.error("contract not initialized");
     return await contract!
       .getAllBookings()
-      .then((res) => {
+      .then((res: bookingType[]) => {
         console.log("getting all bookings", res);
         return res;
       })
-      .catch((err) => toast.error(err));
+      .catch((err) => console.log(err));
   }
 
   return {
