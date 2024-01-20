@@ -1,16 +1,37 @@
-"use client";
-import React, { useState } from "react";
-import { QrScanner } from "@yudiel/react-qr-scanner";
+import React from "react";
+import QRCode from "react-qr-code";
 
-const Scanner = () => {
+const QrCodeGenerator = ({
+  amount,
+  address,
+}: {
+  amount: number;
+  address: string;
+}) => {
+  const qrCodeValue = [
+    {
+      amount,
+      address,
+    },
+  ];
+
   return (
-    <div className="sm:w-1/4 w-1/3">
-      <QrScanner
-        onDecode={(result) => console.log(result)}
-        onError={(error) => console.log(error?.message)}
+    <div
+      style={{
+        height: "auto",
+        margin: "0 auto",
+
+        width: "100%",
+      }}
+    >
+      <QRCode
+        size={256}
+        style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+        value={JSON.stringify(qrCodeValue)}
+        viewBox={`0 0 256 256`}
       />
     </div>
   );
 };
 
-export default Scanner;
+export default QrCodeGenerator;
