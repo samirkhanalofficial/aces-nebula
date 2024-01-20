@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { IoMdClose } from "react-icons/io";
 export default function UserDetails() {
   return (
-    <div className=" m-5">
+    <div className=" m-5 flex items-center justify-center">
       <div className="w-full h-40 bg-black/10 rounded-lg relative p-2">
         <div className="w-24 h-24 rounded-full bg-black"></div>
         <div className="flex flex-col absolute right-10 top-5">

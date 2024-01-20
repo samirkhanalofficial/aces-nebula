@@ -7,7 +7,6 @@ import { FaMap, FaSearch } from "react-icons/fa";
 import { MyMap } from "../components/ui/Map";
 import { Ref, useEffect, useLayoutEffect, useState } from "react";
 import Logo from "../components/ui/Logo";
-import ShortDistanceMap from "../components/ui/ShortDistanceMap";
 import { toast } from "react-toastify";
 import NavBar from "../components/nav/Navbar";
 import useBlockchain from "@/services/useBlockchain";
