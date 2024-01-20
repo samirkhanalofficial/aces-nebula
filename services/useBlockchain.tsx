@@ -162,5 +162,16 @@ export default function useBlockchain() {
       .catch((err) => toast.error(err));
   }
 
-  return { createBooking, getMyHistory };
+  return {
+    createBooking,
+    getMyHistory,
+    getAllBookings,
+    getMyWalletAddress,
+    getMyRewardPoint,
+    getMyBalance,
+    getPriceConversion,
+    pay,
+    withdraw,
+    acceptBooking,
+  };
 }
