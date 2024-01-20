@@ -126,5 +126,16 @@ export default function useBlockchain() {
       })
       .catch((err) => toast.error(err));
   }
-  return { createBooking, getMyHistory };
+  async function getAllBookings() {
+    await initalize();
+    if (!contract) return toast.error("contract not initialized");
+    return await contract!
+      .getAllBookings()
+      .then((res) => {
+        console.log("getting all bookings", res);
+        return res;
+      })
+      .catch((err) => toast.error(err));
+  }
+  return { createBooking, getMyHistory, acceptBooking, getAllBookings };
 }
